@@ -5,6 +5,7 @@ import {
   CardText,
   CardTitle
 } from 'reactstrap';
+import { useHistory } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import { DeleteStudent } from '../helpers/data/studentData';
 import StudentForm from '../studentForm';
@@ -17,6 +18,7 @@ const StudentCard = ({
   setStudents
 }) => {
   const [editing, setEditing] = useState(false);
+  const history = useHistory();
 
   const handleClick = (type) => {
     // switch case
@@ -28,6 +30,9 @@ const StudentCard = ({
       case 'edit':
         setEditing((prevState) => !prevState);
         break;
+      case 'view':
+        history.push(`/students/${firebaseKey}`);
+        break;
       default:
         console.warn('nothing selected');
     }
@@ -37,6 +42,7 @@ const StudentCard = ({
     <CardTitle tag="h5">{name}</CardTitle>
     <CardText>{grade}</CardText>
     <CardText>{teacher}</CardText>
+    <Button color="warning" onClick={handleClick('view')}>View Student</Button>
     <Button color="danger" onClick={() => handleClick('delete')}>Delete Student</Button>
     <Button color="info" onClick={() => handleClick('edit')}>
       {editing ? 'Close Form' : 'Edit Student'}
